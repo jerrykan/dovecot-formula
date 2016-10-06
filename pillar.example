@@ -1,0 +1,41 @@
+dovecot:
+  lookup:
+    # Install extra dovecot packages (default: dovecot-imapd)
+    packages:
+      - dovecot-imapd
+      - dovecot-managesieved
+      - dovecot-sieve
+      - dovecot-sqlite
+
+  confd:
+    # filename in conf.d subdirectory (ie. conf.d/10-auth.conf)
+    10-auth:
+      # comment out specific line(s) in an existing (upstream) confd file
+      comment:
+        - '\!include auth-system.conf.ext'
+
+    # set the contents of a confd file
+    11-mail: |
+      mail_location = maildir:~/Maildir
+
+  confd-ext:
+    # filename in conf.d subdirectory (ie. conf.d/auth-sql.conf.ext)
+    auth-sql: |
+      passdb {
+        driver = sql
+        args = /etc/dovecot/dovecot-sql.conf.ext
+      }
+
+      userdb {
+        driver = sql
+        args = /etc/dovecot/dovecot-sql.conf.ext
+      }
+
+  conf-ext:
+    # filename in main conf directory (ie. dovecot-sql.conf.ext)
+    dovecot-sql: |
+      driver = sqlite
+      connect = /etc/dovecot/authdb.sqlite
+      default_pass_scheme = SHA512-CRYPT
+      password_query = SELECT userid AS user, pw AS password \
+        FROM users WHERE userid = '%u' AND active = 'Y'

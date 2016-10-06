@@ -1,0 +1,7 @@
+dovecot:
+  service: dovecot
+  packages:
+    - dovecot-imapd
+
+  config_conf_dir: /etc/dovecot
+  config_confd_dir: /etc/dovecot/conf.d

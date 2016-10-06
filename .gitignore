@@ -1,0 +1,3 @@
+/.vagrant
+/tests/pillar/default.sls
+.*.swp

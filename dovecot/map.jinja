@@ -1,0 +1,5 @@
+{%- import_yaml "dovecot/defaults.yaml" as defaults -%}
+
+{%- set dovecot = salt['pillar.get'](
+    'dovecot:lookup', defaults.dovecot, merge=True) -%}
+
